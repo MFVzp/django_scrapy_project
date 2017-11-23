@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from .tasks import add_product_item, add_price_item
 from .items import ProductItem, PriceItem
-from .settings import NUMBER_OF_ITEMS_TO_INSERT
 
 
 class ScTestPipeline(object):
@@ -11,7 +10,7 @@ class ScTestPipeline(object):
 
     def process_item(self, item, spider):
         self.store.append(item)
-        if len(self.store) > NUMBER_OF_ITEMS_TO_INSERT:
+        if len(self.store) > 5:
             for store_item in self.store:
                 if isinstance(store_item, ProductItem):
                     add_product_item.delay(dict(store_item))
