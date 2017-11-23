@@ -99,3 +99,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# pycharm
+django_scrapy_project/.idea/
+.idea/
