@@ -101,7 +101,7 @@ class MytheresaSpider(RedisSpider):
         product['brand'] = response.xpath(
             '//div[@class="product-designer"]/span/a/text()'
         ).extract_first('').strip()
-        product['categories'] = response.meta['categories']
+        product['categories'] = ' > '.join(response.meta['categories'])
         product['description'] = response.xpath(
             '//p[@class="pa1 product-description"]/text()'
         ).extract_first('').strip()
