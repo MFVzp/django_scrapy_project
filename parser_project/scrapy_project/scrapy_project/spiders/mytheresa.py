@@ -3,26 +3,11 @@ from datetime import date
 
 import scrapy
 from scrapy_redis.spiders import RedisSpider
-from sc_test.items import ProductItem, PriceItem
+from scrapy_project.items import ProductItem, PriceItem
 
 
 class MytheresaSpider(RedisSpider):
     name = 'mytheresa'
-
-    def get_categories(self, response):
-        categories = response.xpath(
-            '//ol[@class="nav-primary"]/li[contains(@class,"parent") and position()>2 and position()<7]/a'
-        )
-        for category in categories[:1]:
-            category_url = category.xpath('@href').extract_first('')
-            category_name = category.xpath('span/text()').extract_first('').strip()
-            yield scrapy.Request(
-                url=category_url,
-                callback=self.get_common_types,
-                meta={
-                    'categories': [category_name, ],
-                }
-            )
 
     def parse(self, response):
         if 'clothing' in response.url:
@@ -75,7 +60,7 @@ class MytheresaSpider(RedisSpider):
         items = response.xpath(
             '//div[@class="category-products"]/ul/li[contains(@class,"item")]'
         )
-        for item in items[:5]:
+        for item in items[:1]:
             item = item.xpath('div[@class="product-info"]/h2[@class="product-name"]/a')
             item_url = item.xpath('@href').extract_first('')
             item_name = item.xpath('text()').extract_first('')
@@ -91,9 +76,9 @@ class MytheresaSpider(RedisSpider):
     def get_item(self, response):
         product = ProductItem()
         price = PriceItem()
-        product['site_product_id'] = price['site_product_id'] = response.xpath(
+        product['site_product_id'] = price['site_product_id'] = int(response.xpath(
             '//input[@name="product"]/@value'
-        ).extract_first('').strip()
+        ).extract_first('').strip())
 
         product['name'] = response.xpath(
             '//div[@class="product-name"]/span/text()'
