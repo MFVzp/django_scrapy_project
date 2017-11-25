@@ -44,7 +44,8 @@ class MytheresaSpider(RedisSpider):
             callback=self.get_items,
             meta={
                 'categories': response.meta['categories'],
-            }
+            },
+            dont_filter=True
         )
 
     def get_items(self, response):
@@ -55,12 +56,13 @@ class MytheresaSpider(RedisSpider):
                 callback=self.get_items,
                 meta={
                     'categories': response.meta['categories'],
-                }
+                },
+                dont_filter=True
             )
         items = response.xpath(
             '//div[@class="category-products"]/ul/li[contains(@class,"item")]'
         )
-        for item in items[:1]:
+        for item in items[:5]:
             item = item.xpath('div[@class="product-info"]/h2[@class="product-name"]/a')
             item_url = item.xpath('@href').extract_first('')
             item_name = item.xpath('text()').extract_first('')
@@ -70,7 +72,8 @@ class MytheresaSpider(RedisSpider):
                 callback=self.get_item,
                 meta={
                     'categories': response.meta['categories'],
-                }
+                },
+                dont_filter=True
             )
 
     def get_item(self, response):

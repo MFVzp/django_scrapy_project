@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+import sys
+import os
+import django
+
+# Django integration
+script_path = os.path.join(os.path.dirname(os.path.abspath('.')))
+sys.path.append(script_path)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'parser_project.settings'
+django.setup()
 
 # Scrapy settings for scrapy_project project
 #

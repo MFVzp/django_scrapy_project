@@ -7,10 +7,13 @@ class Product(models.Model):
     brand = models.TextField()
     categories = models.TextField()
     description = models.TextField()
-    material = models.TextField(blank=True)
-    made_in = models.TextField(blank=True)
+    material = models.TextField()
+    made_in = models.TextField()
     url = models.URLField()
     site = models.URLField()
+
+    def __str__(self):
+        return self.name
 
 
 class Image(models.Model):
